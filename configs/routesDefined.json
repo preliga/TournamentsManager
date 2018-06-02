@@ -1,0 +1,6 @@
+{
+  "\/": {
+    "file": "content\\index.php",
+    "action": "content\\index"
+  }
+}

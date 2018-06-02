@@ -1,0 +1,14 @@
+{
+    "require": {
+        "smarty/smarty": "~3.1"
+    },
+    "autoload": {
+        "psr-0": {
+            "Zend_": "library/"
+        },
+        "psr-4": {
+            "library\\": "library/",
+            "resource\\": "resource/"
+        }
+    }
+}

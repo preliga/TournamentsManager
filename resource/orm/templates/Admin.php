@@ -18,8 +18,8 @@ class Admin extends baseTemplate
     protected function createSelect(array $variable = []): \Zend_Db_Select
     {
         $select = $this->db->select()
-            ->from(['a' => 'admin'], [])
-            ->join(['g' => 'group'], 'g.id = a.groupId');
+            ->from(['a' => 'admin'], []);
+//            ->join(['g' => 'group'], 'g.id = a.groupId');
 
         return $select;
     }
@@ -40,7 +40,6 @@ class Admin extends baseTemplate
                         ],
                         'columns' => [
                             'adminId' => 'id',
-                            'groupId',
                             'login',
                             'password',
                             'sessionId',
@@ -49,18 +48,18 @@ class Admin extends baseTemplate
                         'defaultValues' => [
                         ]
                     ],
-                    'group' => [
-                        'alias' => 'g',
-                        'keys' => [   /// ustalić tylko jeden klucz
-                            'groupId' => 'id',
-                        ],
-                        'columns' => [
-                            'groupId' => 'id',
-                            'name',
-                        ],
-                        'defaultValues' => [
-                        ]
-                    ],
+//                    'group' => [
+//                        'alias' => 'g',
+//                        'keys' => [   /// ustalić tylko jeden klucz
+//                            'groupId' => 'id',
+//                        ],
+//                        'columns' => [
+//                            'groupId' => 'id',
+//                            'name',
+//                        ],
+//                        'defaultValues' => [
+//                        ]
+//                    ],
                 ]
             ];
     }
@@ -111,7 +110,7 @@ class Admin extends baseTemplate
             return null;
         }
 
-        $admin = $this->findOne(['sessionId = ?' => $sessionId, 'NOW() < DATE_ADD(sessionCreate, INTERVAL 5 MINUTE)']);
+        $admin = $this->findOne(['sessionId = ?' => $sessionId, 'NOW() < DATE_ADD(sessionCreate, INTERVAL 60 MINUTE)']);
 
         return $admin;
     }

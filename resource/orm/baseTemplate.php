@@ -40,9 +40,6 @@ abstract class baseTemplate extends DataTemplate
 
     protected function getDb(): \Zend_Db_Adapter_Mysqli
     {
-//        $config = Config::getInstance()->getConfig('db');
-//        $db = Db::getInstance($config['KomisjaWyborcza'], 'KomisjaWyborcza');
-//        return  $db->getDb();
         return  Registry::getInstance()->db;
     }
 }

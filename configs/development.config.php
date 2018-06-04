@@ -20,7 +20,7 @@ return array_merge(
         'db' => [
             'KomisjaWyborcza' => [
                 'driver' => 'Mysqli',
-                'dbname' => 'KomisjaWyborcza',
+                'dbname' => 'TournamentsManager',
                 'username' => 'root',
                 'password' => 'rootroot'
             ]

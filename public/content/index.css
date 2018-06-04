@@ -1,0 +1,9 @@
+.div-box {
+    font-weight: bold;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.div-box:hover {
+    background-color: #ecc1b3;
+}

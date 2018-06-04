@@ -9,6 +9,7 @@
 namespace resource\action;
 
 use library\PigOrm\Record;
+use resource\model\PermissionManager;
 use resource\orm\templates\Admin as AdminTemplate;
 
 abstract class Admin extends Base
@@ -22,10 +23,10 @@ abstract class Admin extends Base
 
     public function permissionBase()
     {
-        $this->admin = AdminTemplate::getInstance()->getAdminBySession();
+        $this->admin = PermissionManager::authorization();
 
         if (empty($this->admin) || $this->admin->empty()) {
-            $this->forward('/admin/login');
+            $this->forward('/authorization');
         }
     }
 

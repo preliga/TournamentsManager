@@ -2,10 +2,10 @@
 define(
     [
         '/scripts/lib/PigOrmJS/DataTemplate.js',
-        '/scripts/app/js/component/general/loader.js',
-        '/scripts/app/js/component/form/tournament.js'
+        '/scripts/app/js/vue/component/general/loader.js',
+        '/scripts/app/js/vue/component/general/contextMenu.js',
     ],
-    function (DateTemplate, loaderObj, tournamentObj) {
+    function (DateTemplate, loaderObj, contextMenuObj) {
 
         var css = document.createElement("style");
         css.type = "text/css";
@@ -100,48 +100,54 @@ define(
         return {
             components: {
                 'component-general-loader': loaderObj,
-                'component-form-tournament': tournamentObj
+                'component-general-contextMenu': contextMenuObj,
             },
-            data: {
-                id: 'tournament-component',
-                tournaments: [],
-                amountRecords: 0,
-                currentSort: 'createDate asc',
-                currentSortCol: 'createDate',
-                currentSortDir: 'asc',
-                pageSize: 10,
-                currentPage: 1,
-                currentWhere: {},
-                loader: true,
-                searchParams: {
-                    tournamentName: {
-                        value: "",
-                        where: "t.name like ?",
-                        pattern: "%?%"
-                    },
-                    tournamentType: {
-                        value: "",
-                        where: "tt.name like ?",
-                        pattern: "%?%"
-                    },
-                    login: {
-                        value: "",
-                        where: "a.login = ?",
-                        // pattern: "?"
-                    },
+            data: function () {
+                return {
+                    id: 'tournament-component',
+                    tournaments: [],
+                    amountRecords: 0,
+                    currentSort: 'createDate asc',
+                    currentSortCol: 'createDate',
+                    currentSortDir: 'asc',
+                    pageSize: 10,
+                    currentPage: 1,
+                    currentWhere: {},
+                    loader: true,
+                    searchParams: {
+                        tournamentName: {
+                            value: "",
+                            where: "t.name like ?",
+                            pattern: "%?%"
+                        },
+                        tournamentType: {
+                            value: "",
+                            where: "tt.name like ?",
+                            pattern: "%?%"
+                        },
+                        login: {
+                            value: "",
+                            where: "a.login = ?",
+                            // pattern: "?"
+                        },
+                    }
                 }
             },
-            created: function () {
+            created:
 
-                let $this = this;
+                function () {
 
-                $this.$root.$on('refreshRecord', function () {
+                    let $this = this;
+
+                    $this.$root.$on('refreshRecord', function () {
+                        find($this);
+                    });
+
+                    loadGetParams($this);
                     find($this);
-                });
+                }
 
-                loadGetParams($this);
-                find($this);
-            },
+            ,
             methods: {
                 sort: function (s) {
                     let $this = this;
@@ -154,59 +160,74 @@ define(
                     $this.currentSort = $this.currentSortCol + " " + $this.currentSortDir;
 
                     getTournaments($this);
-                },
+                }
+                ,
                 nextPage: function () {
                     if ((this.currentPage * this.pageSize) < this.amountRecords) {
                         this.currentPage++;
                         let $this = this;
                         getTournaments($this);
                     }
-                },
+                }
+                ,
                 prevPage: function () {
                     if (this.currentPage > 1) {
                         this.currentPage--;
                         let $this = this;
                         getTournaments($this);
                     }
-                },
+                }
+                ,
                 setPage: function (numberPage) {
                     this.currentPage = numberPage;
                     let $this = this;
                     getTournaments($this);
-                },
+                }
+                ,
                 search: function () {
                     let $this = this;
                     find($this);
-                },
-                add: function() {
+                }
+                ,
+                add: function () {
                     this.$root.$emit('showForm');
-                },
-                edit: function() {
+                }
+                ,
+                edit: function () {
                     console.log("edit");
-                },
-                remove: function(tournamentId) {
+                }
+                ,
+                remove: function (tournamentId) {
                     let $this = this;
                     tournamentTemplate
                         .createRecord()
-                        .then(function(tournament){
+                        .then(function (tournament) {
 
                             tournament.tournamentId = tournamentId;
                             tournament.status = "old";
                             tournament.delete([], ['tournament']);
 
                             $this.$toast.success({
-                                title:'Success',
-                                message:'Poprawnie usunięto rekord'
+                                title: 'Success',
+                                message: 'Poprawnie usunięto rekord'
                             });
 
                             $this.$root.$emit('refreshRecord');
                             $this.show = false;
                         });
-                },
-                reset: function() {
+                }
+                ,
+                reset: function () {
                     this.searchParams.tournamentName.value = "";
                     this.searchParams.tournamentType.value = "";
                     this.searchParams.login.value = "";
+                }
+                ,
+                openMenu: function (event, tournamentId) {
+                    // console.log(ContextMenu);
+                    // console.log(event);
+                    this.$root.$emit('showMenu', {event: event, tournamentId: tournamentId, $this: this});
+                    // console.log(tournamentId);
                 }
             },
             computed: {
@@ -218,10 +239,12 @@ define(
                     }
                     return amountPage;
                 }
-            },
+            }
+            ,
             template: `
-                <div id="app">
-                <component-form-tournament></component-form-tournament>
+                <div id="tournamentTable">
+                <component-general-contextMenu></component-general-contextMenu>
+                <!--<component-form-tournament></component-form-tournament>-->
                 <div class="w3-row-padding">
                   <div class="w3-quarter">
                     <input class="w3-input w3-border" type="text" placeholder="Nazwa" v-model="searchParams.tournamentName.value" @keyup.enter="search">
@@ -245,7 +268,7 @@ define(
                   </div>
                 </div>
                 <br>
-              <table>
+              <table class="w3-hoverable">
                 <thead>
                   <tr>
                     <th>Lp.</th>
@@ -297,7 +320,7 @@ define(
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(tournament, index) in tournaments">
+                  <tr v-for="(tournament, index) in tournaments" @contextmenu="openMenu($event, tournament.tournamentId)">
                     <td>{{(currentPage - 1) * pageSize + index + 1}}</td>
                     <td>{{tournament.tournamentName}}</td>
                     <td>{{tournament.tournamentType}}</td>
@@ -327,4 +350,5 @@ define(
                 </div>
             `
         }
-    });
+    }
+);

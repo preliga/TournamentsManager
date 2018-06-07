@@ -1,0 +1,11 @@
+th.header-order {
+    cursor: pointer;
+}
+th.header-order:hover
+{
+    background-color:rgb(121,215,121);
+}
+
+tr.selected {
+    background-color: #2fff1f !important;
+}

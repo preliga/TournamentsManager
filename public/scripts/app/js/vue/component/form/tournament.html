@@ -1,0 +1,28 @@
+<div>
+    <div class="w3-row-padding w3-white" style="padding: 10px;" v-if="show">
+        <div class="w3-third">
+            <input class="w3-input w3-border" type="text" placeholder="Nazwa" v-model="tournament.tournamentName.value" >
+            <div class="input-error" v-if="tournament.tournamentName.error">Pole jest wymagane</div>
+        </div>
+        <div class="w3-third">
+            <select class="w3-select" v-model="tournament.typeId.value">
+                <option value="">
+                    Wybierz Typ
+                </option>
+                <option v-for="type in types" v-bind:value="type.typeId">
+                    {{ type.tournamentType }}
+                </option>
+            </select>
+            <div class="input-error" v-if="tournament.typeId.error">Pole jest wymagane</div>
+        </div>
+        <div class="w3-third w3-center">
+            <div class="w3-half">
+                <button class="w3-button w3-green" @click="add"><i class="fas fa-plus"></i>&nbsp;Dodaj</button>
+            </div>
+            <div class="w3-half">
+                <button class="w3-button w3-green" @click="hide"><i class="fas fa-arrow-down"></i>&nbsp;Ukryj</button>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>

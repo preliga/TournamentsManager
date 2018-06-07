@@ -1,0 +1,7 @@
+<div id="contextMenu" class="context-menu">
+    <ul>
+        <li v-for="(option, index) in options" @click="action(option.function)">
+            <span v-html="option.label"></span>
+        </li>
+    </ul>
+</div>

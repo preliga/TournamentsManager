@@ -7,8 +7,10 @@ if (view.fileJsExist) {
 const mainAction = action;
 
 requirejs.config({
+    baseUrl: '/',
     paths: {
-        'cxlt-vue2-toastr': '/node_modules/cxlt-vue2-toastr/dist/js/cxlt-vue2-toastr'
+        'cxlt-vue2-toastr': '/node_modules/cxlt-vue2-toastr/dist/js/cxlt-vue2-toastr',
+        text: '/node_modules/text/text'
     },
 });
 

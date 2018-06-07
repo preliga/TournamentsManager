@@ -2,7 +2,7 @@
 define(
     [
         './Base.js',
-        '../component/admin/menu.js'
+        '../vue/component/admin/menu.js'
     ],
     function (Action, menuObj) {
 

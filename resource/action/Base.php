@@ -64,6 +64,7 @@ abstract class Base extends Action
         $this->addCSS('/scripts/app/css/style.css');
         $this->addCSS('/scripts/lib/w3/w3.css');
         $this->addCSS('/node_modules/cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css');
+        $this->addCSS('/node_modules/v-contextmenu/dist/index.css');
 //        $this->addCSS('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css');
     }
 }

@@ -1,0 +1,7 @@
+div.input-error {
+    border: 1px solid red;
+    color: #7d0a06;
+    background-color: #fad4d6;
+    padding: 2px;
+    width: 100%;
+}

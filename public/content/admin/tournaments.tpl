@@ -2,7 +2,9 @@
     <br>
     {*<style src="/node_modules/cxlt-vue2-toastr/dist/css/cxlt-vue2-toastr.css"></style>*}
 
-    <div id="component-table-tournaments"></div>
+    <div id="view-admin-tournament"></div>
+    {*<div id="component-form-tournament"></div>*}
+    {*<div id="component-table-tournaments"></div>*}
     {*<table id="tournamentsList">*}
         {*<thead>*}
         {*<tr>*}

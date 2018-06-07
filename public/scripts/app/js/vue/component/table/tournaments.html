@@ -1,0 +1,111 @@
+<div id="tournamentTable">
+    <component-general-contextMenu></component-general-contextMenu>
+    <div class="w3-row-padding">
+        <div class="w3-quarter">
+            <input class="w3-input w3-border" type="text" placeholder="Nazwa"
+                   v-model="searchParams.tournamentName.value" @keyup.enter="search">
+        </div>
+        <div class="w3-quarter">
+            <input class="w3-input w3-border" type="text" placeholder="Typ" v-model='searchParams.tournamentType.value'
+                   @keyup.enter="search">
+        </div>
+        <div class="w3-quarter">
+            <input class="w3-input w3-border" type="text" placeholder="Autor" v-model='searchParams.login.value'
+                   @keyup.enter="search">
+        </div>
+        <div class="w3-quarter w3-center">
+            <div class="w3-third">
+                <button class="w3-button w3-green" @click="search"><i class="fas fa-search"></i>&nbsp;Szukaj</button>
+            </div>
+            <div class="w3-third">
+                <button class="w3-button w3-green" @click="reset"><i class="fas fa-align-justify"></i>&nbsp;Wyczyść
+                </button>
+            </div>
+            <div class="w3-third">
+                <button class="w3-button w3-green" @click="add"><i class="fas fa-plus"></i>&nbsp;Dodaj</button>
+            </div>
+        </div>
+    </div>
+    <br>
+    <table class="w3-hoverable">
+        <thead>
+        <tr class="w3-grey">
+            <th>Lp.</th>
+            <th @click="sort('tournamentName')" class="header-order">
+                Nazwa
+                <span v-if="currentSortCol == 'tournamentName'">
+                    <span v-if="currentSortDir == 'asc'">
+                    &darr;
+                    </span>
+                    <span v-else>
+                    &uarr;
+                    </span>
+                </span>
+            </th>
+            <th @click="sort('tournamentType')" class="header-order">
+                Typ
+                <span v-if="currentSortCol == 'tournamentType'">
+                    <span v-if="currentSortDir == 'asc'">
+                    &darr;
+                    </span>
+                    <span v-else>
+                    &uarr;
+                    </span>
+                </span>
+            </th>
+            <th @click="sort('login')" class="header-order">
+                Autor
+                <span v-if="currentSortCol == 'login'">
+                    <span v-if="currentSortDir == 'asc'">
+                    &darr;
+                    </span>
+                    <span v-else>
+                    &uarr;
+                    </span>
+                </span>
+            </th>
+            <th @click="sort('createDate')" class="header-order">
+                Data utworzenia
+                <span v-if="currentSortCol == 'createDate'">
+                    <span v-if="currentSortDir == 'asc'">
+                    &darr;
+                    </span>
+                    <span v-else>
+                    &uarr;
+                    </span>
+                </span>
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(tournament, index) in items" @contextmenu="openMenu($event, tournament.tournamentId)"
+            v-bind:class="{ 'selected': selectedItems[tournament.tournamentId] == true }"
+            @click="selected(tournament.tournamentId)">
+            <td>{{(currentPage - 1) * pageSize + index + 1}}</td>
+            <td>{{tournament.tournamentName}}</td>
+            <td>{{tournament.tournamentType}}</td>
+            <td>{{tournament.login}}</td>
+            <td>{{tournament.createDate}}</td>
+            <td>
+                <i class="fas fa-edit" style="cursor: pointer;" @click="edit"></i>
+                <i class="fas fa-trash-alt" style="cursor: pointer;" @click="remove(tournament.tournamentId)"></i>
+            </td>
+        </tr>
+        <tr v-if="amountRecords == 0">
+            <td colspan="5">Brak rekordów</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <span>Liczba rekordów {{amountRecords}}</span>
+    <br>
+    <br>
+    <div class="w3-bar" v-if="amountPages != 0">
+        <a class="w3-button" @click="prevPage">&laquo;</a>
+        <a class="w3-button" @click="setPage(index)" v-for="index in amountPages"
+           v-bind:class="{ 'w3-green': index == currentPage }">{{index}}</a>
+        <a class="w3-button" @click="nextPage">&raquo;</a>
+    </div>
+    <!--<component-general-loader v-if="loader"></component-general-loader>-->
+</div>
